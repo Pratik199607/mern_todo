@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+*{
+    margin: 0;
+    padding: 0;
+}
+nav{
+    background-color: blue;
+    display: flex;
+    height: 10lvh;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+}
+.todo{
+    font-size: 1.5rem;
+    font-weight: bolder;
+    /* margin: 10px; */
+}
+nav > div{
+    margin: 0 30px;
+}
+.pad{
+    padding: 0 10px;
+    color: white;
+    text-decoration: none;
+}
+.container{
+    height: 70lvh;
+}
+
+.custom_width{
+    width: 40dvw;
+    height: 10dvh;
+}
