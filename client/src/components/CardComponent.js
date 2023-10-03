@@ -4,6 +4,7 @@ import { Modal } from 'antd';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 import './CardComponent.css'
+import { API_URL } from '../App';
 
 const CardComponent = ({ todo, onDelete }) => {
   const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
@@ -17,13 +18,15 @@ const CardComponent = ({ todo, onDelete }) => {
   const handleUpdate = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/todo/${todo._id}`, { task: updatedTask },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.put(
+				`${API_URL}/api/todo/${todo._id}`,
+				{ task: updatedTask },
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
       todo.task = updatedTask;
       hideUpdateModal();
     } catch (error) {
@@ -79,7 +82,7 @@ const CardComponent = ({ todo, onDelete }) => {
       >
         Are you sure you want to update this todo?
         <input
-          className="mt-3 ml-2 rounded-md"
+          className="mt-3 w-[100%] rounded-md"
           type="text"
           value={updatedTask}
           onChange={(e) => setUpdatedTask(e.target.value)}

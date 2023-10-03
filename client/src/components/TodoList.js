@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import CardComponent from "./CardComponent";
 import { Button } from "flowbite-react";
+import { API_URL } from '../App';
 
 const TodoList = () => {
   const token = localStorage.getItem('token');
@@ -18,7 +19,7 @@ const TodoList = () => {
   const handleCreateTodo = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/todo",
+        `${API_URL}/api/todo`,
         { task: newTodo },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -34,7 +35,7 @@ const TodoList = () => {
 
   const handleDeleteTodo = async (todoId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/todo/${todoId}`, {
+      await axios.delete(`${API_URL}/api/todo/${todoId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== todoId));
@@ -50,7 +51,7 @@ const TodoList = () => {
 
   const fetchTodos = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/todo?page=${currentPage}&search=${search}`, {
+      const response = await axios.get(`${API_URL}/api/todo?page=${currentPage}&search=${search}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const { todos: fetchedTodos, totalPages } = response.data;

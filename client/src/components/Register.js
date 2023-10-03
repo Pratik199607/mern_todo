@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 // import { setLoggedIn } from '../store/authSlice';
 import '../index.css';
 import '../App.css';
+import { API_URL } from '../App';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -18,10 +19,10 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/register', {
-        email,
-        password,
-      });
+      const response = await axios.post(`${API_URL}/api/register`, {
+				email,
+				password,
+			});
       setSuccess(response.data.message);
         setTimeout(() => {
         navigate('/login');

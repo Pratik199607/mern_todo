@@ -8,13 +8,14 @@ import Register from './components/Register';
 import Login from './components/Login';
 import TodoList from './components/TodoList';
 
+export const API_URL = process.env.REACT_APP_API_URL;
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log('Token: ', token);
+    // console.log('Token: ', token);
     if (token) {
       dispatch(setLoggedIn(true));
     } else {

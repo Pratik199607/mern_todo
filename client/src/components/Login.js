@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { setLoggedIn } from '../store/authSlice';
 import '../index.css';
 import '../App.css';
+import { API_URL } from '../App';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -18,7 +19,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-		const response = await axios.post('http://localhost:5000/api/login', {
+		const response = await axios.post(`${API_URL}/api/login`, {
 			email,
 			password,
 		});
@@ -31,7 +32,7 @@ const Login = () => {
 		}, 2000);
 		// dispatch(setLoggedIn(true));
 		// navigate('/todo');
-		console.log(response.data);
+		// console.log(response.data);
     } catch (error) {
 		console.error(error);
 		setError(`Error : ${error.response.data}`);
