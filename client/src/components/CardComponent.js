@@ -52,7 +52,7 @@ const CardComponent = ({ todo, onDelete }) => {
   };
 
   return (
-    <div className="mt-3 custom_width rounded-full bg-slate-100 custom_container">
+    <div className="w-full mt-3 custom_width rounded-full bg-slate-100 custom_container">
       <div className="mx-2">
         <span>Task: {todo.task}</span>
       </div>
