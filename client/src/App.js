@@ -5,30 +5,34 @@ import { useSelector, useDispatch } from "react-redux";
 import { Route, Routes, Link, Navigate } from "react-router-dom";
 import { setLoggedIn, logout } from "./store/authSlice";
 import Loader from "./components/Loader";
-import ProtectedRoute from "./components/ProtectedRoute";
 const Register = lazy(() => import("./components/Register"));
 const Login = lazy(() => import("./components/Login"));
 const TodoList = lazy(() => import("./components/TodoList"));
-// import Register from './components/Register';
-// import Login from './components/Login';
-// import TodoList from './components/TodoList';
 
 export const API_URL = process.env.REACT_APP_API_URL;
+
 function App() {
-	const [isLoading, setIsLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(false); // Initialize as false
 	const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 	const dispatch = useDispatch();
 
+	// Function to set isLoading to true when navigating
+	const handleNavigation = () => {
+		setIsLoading(true);
+		setTimeout(() => {
+			setIsLoading(false);
+		}, 200);
+	};
+
 	useEffect(() => {
 		const token = localStorage.getItem("token");
-		// console.log('Token: ', token);
 		if (token) {
 			dispatch(setLoggedIn(true));
 		} else {
 			dispatch(setLoggedIn(false));
 		}
-		console.log(isLoggedIn);
 
+		// Simulate a 1.5-second loading delay
 		setTimeout(() => {
 			setIsLoading(false); // Hide the loader after 1.5 seconds
 		}, 1500);
@@ -37,6 +41,7 @@ function App() {
 	const handleLogout = () => {
 		dispatch(logout());
 		localStorage.clear();
+		setIsLoading(false); // Set isLoading to false when logging out
 	};
 
 	return (
@@ -46,7 +51,7 @@ function App() {
 				<div>
 					{isLoggedIn ? (
 						<>
-							<Link className="pad" to="/todo">
+							<Link className="pad" to="/todo" onClick={handleNavigation}>
 								Todo
 							</Link>
 							<Link
@@ -54,6 +59,7 @@ function App() {
 								to="/"
 								onClick={() => {
 									handleLogout();
+									handleNavigation();
 								}}
 							>
 								Logout
@@ -61,10 +67,10 @@ function App() {
 						</>
 					) : (
 						<>
-							<Link className="pad" to="/register">
+							<Link className="pad" to="/register" onClick={handleNavigation}>
 								Register
 							</Link>
-							<Link className="pad" to="/login">
+							<Link className="pad" to="/login" onClick={handleNavigation}>
 								Login
 							</Link>
 						</>
@@ -73,39 +79,27 @@ function App() {
 			</nav>
 
 			{isLoading ? (
-				<Loader /> // Show the loader while isLoading is true
+				<Loader /> // Show the loader when isLoading is true
 			) : (
 				<Suspense fallback={<Loader />}>
 					<Routes>
 						<Route path="/register" element={<Register />} />
 						<Route path="/login" element={<Login />} />
-						<Route path="/todo" element={<ProtectedRoute element={<TodoList />} />} />
-						<Route path="/" element={<ProtectedRoute element={<Login />} />} />
-						{/* {isLoggedIn ? (
-							<Route
-								path="/todo"
-								element={
-									<ProtectedRoute>
-										<TodoList />
-									</ProtectedRoute>
-								}
-							/>
+						{isLoggedIn ? (
+							<Route path="/todo" element={<TodoList />} />
 						) : (
 							<Route
 								path="/"
 								element={
-									<ProtectedRoute
-										element={
-											<Navigate to="/login" /> // Redirect to login if not logged in
-										}
-									/>
+									<Navigate to="/login" /> // Redirect to login if not logged in
 								}
 							/>
-						)} */}
+						)}
 					</Routes>
 				</Suspense>
 			)}
 		</div>
 	);
 }
+
 export default App;
